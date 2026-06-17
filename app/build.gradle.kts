@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "dev.mechrev.evmwallet"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "dev.mechrev.evmwallet"
@@ -52,8 +52,12 @@ dependencies {
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.9.0")
+    implementation("androidx.camera:camera-camera2:1.6.1")
+    implementation("androidx.camera:camera-lifecycle:1.6.1")
+    implementation("androidx.camera:camera-view:1.6.1")
     implementation("androidx.webkit:webkit:1.12.1")
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
+    implementation("com.google.mlkit:barcode-scanning:17.3.0")
     implementation("org.web3j:core:4.12.3")
     debugImplementation("androidx.compose.ui:ui-tooling")
     testImplementation("junit:junit:4.13.2")
