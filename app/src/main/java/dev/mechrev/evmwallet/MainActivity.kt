@@ -467,12 +467,27 @@ fun BrowserPanel(
     onSendTx: suspend (DappTransaction) -> String
 ) {
     var url by remember { mutableStateOf("https://app.uniswap.org/") }
+    var loadedUrl by remember { mutableStateOf(url) }
     var webView by remember { mutableStateOf<WebView?>(null) }
 
     Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-        Row(modifier = Modifier.padding(horizontal = 12.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            OutlinedTextField(url, { url = it }, modifier = Modifier.weight(1f), singleLine = true, label = { Text("DApp URL") })
-            Button(onClick = { webView?.loadUrl(normalizeUrl(url)) }) { Text("Go") }
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 12.dp, vertical = 8.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            OutlinedTextField(
+                value = url,
+                onValueChange = { url = it },
+                modifier = Modifier.weight(1f),
+                singleLine = true,
+                label = { Text("DApp URL") }
+            )
+            Button(
+                modifier = Modifier.height(56.dp),
+                onClick = { loadedUrl = normalizeUrl(url) }
+            ) { Text("Go") }
         }
         AndroidView(
             modifier = Modifier
@@ -500,9 +515,12 @@ fun BrowserPanel(
                         sendTransaction = onSendTx
                     ).install()
                     if (!bridgeInstalled) onStatus("This WebView does not support WebMessageListener")
-                    loadUrl(normalizeUrl(url))
                     webView = this
                 }
+            },
+            update = { view ->
+                webView = view
+                if (view.url != loadedUrl) view.loadUrl(loadedUrl)
             }
         )
     }
